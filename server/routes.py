@@ -1,10 +1,10 @@
 from flask import request, jsonify
 
-from .app import app
-from .extractors import query_to_headings
-from .utils import execute, conv_h_to_str
-from .exceptions import RateLimitExcepton
-from .extractors import query_to_headings
+from app import app
+from extractors import query_to_headings
+from utils import execute, conv_h_to_str
+from exceptions import RateLimitExcepton
+from extractors import query_to_headings
 
 @app.route('/getoutline', methods=['POST'])
 def get_headings():

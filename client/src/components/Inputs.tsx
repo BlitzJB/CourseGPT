@@ -4,6 +4,7 @@ import { BASEURL } from "./config"
 import { saveAs } from 'file-saver';
 import { Spinner } from "./Spinner";
 import JSZip from 'jszip';
+import { Upload } from "./Upload";
 
 interface InputsProps { 
     topic: string
@@ -120,20 +121,26 @@ export const Inputs = ({ topic, setTopic, stage, setStage, setOutline, outline }
         <div className='flex mt-6'>
             <input placeholder='Write a course on anything' className='flex-grow h-12 px-4 mr-3 border-2 rounded-sm border-neutral-500' type="text" value={topic} onChange={e => setTopic(e.target.value)} />
             <button 
-                disabled={stage !== stages.DONE}
-                title={stage !== stages.DONE ? "Let generation complete before exporting" : "Export as zip file"}
+                disabled={stage === stages.WAITING_PROMPT || stage === stages.GENERATING_OUTLINE}
+                title={stage === stages.WAITING_PROMPT || stage === stages.GENERATING_OUTLINE ? "Let generation complete before exporting" : "Export as zip file"}
                 onClick={handleDownload}
-                className={`h-12 px-4 font-medium transition-colors border-2 rounded-sm mr-2 ${stage !== stages.DONE ? "border-neutral-500 text-neutral-500 cursor-not-allowed": "border-violet-500 text-violet-800 hover:text-white hover:bg-violet-500 cursor-pointer"}`}
+                className={`h-12 px-4 font-medium transition-colors border-2 rounded-sm mr-2 ${stage !== stages.DONE ? "border-neutral-500 text-neutral-500": "border-violet-500 text-violet-800 hover:text-white hover:bg-violet-500 cursor-pointer"}`}
             >
-                Export
+                {
+                    stage === stages.DONE ? "Export" : 
+                    stage === stages.GENERATING_SECTIONS ? "Export Partially" :
+                    "Export"
+                }
             </button>
+            <Upload setOutline={setOutline} outline={outline} setStage={setStage} />
             <button disabled={stage === stages.GENERATING_OUTLINE || stage === stages.GENERATING_SECTIONS} onClick={stage === stages.EDITING_OUTLINE ? handleGenerateSubheading : handleGenerateOutline} className={`h-12 pl-4 pr-3 font-medium transition-colors border-2 rounded-sm ${stage === stages.GENERATING_OUTLINE || stage === stages.GENERATING_SECTIONS ? "border-neutral-500 text-neutral-500 cursor-not-allowed" : "border-violet-500 text-violet-800 hover:text-white hover:bg-violet-500"}`}>
                 {
                     stage === stages.WAITING_PROMPT ? "Generate✨" : 
                     stage === stages.GENERATING_OUTLINE ? <div className='flex items-center'><Spinner/> Working the Magic🪄</div> : 
                     stage === stages.EDITING_OUTLINE ? "Save Outline" :
                     stage === stages.GENERATING_SECTIONS ? <div className='flex items-center'><Spinner/> Working the Magic🪄</div> :
-                    stage === stages.DONE ? "Go again✨" : "UNKNOWN"
+                    stage === stages.DONE ? "Go Again✨" : 
+                    stage === stages.UPLOADED ? "Generate New✨": "UNKNOWN"
                 }
             </button>
         </div>

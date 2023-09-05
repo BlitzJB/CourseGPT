@@ -1,8 +1,9 @@
 from functools import wraps
 import time
 import openai
+from openai.error import ServiceUnavailableError, APIError
 
-from .exceptions import RateLimitExcepton
+from exceptions import RateLimitExcepton
 
 
 def conv_h_to_str(topics):
@@ -45,15 +46,21 @@ def execute(system, user) -> str:
             "content": user
         })
     
-    
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-16k",
-        messages=messages,
-        temperature=1,
-        max_tokens=10568,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0
-    )
-    
-    return response['choices'][0]['message']['content']
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-16k",
+            messages=messages,
+            temperature=1,
+            max_tokens=10568,
+            top_p=1,
+            frequency_penalty=0,
+            presence_penalty=0
+        )
+        
+        return response['choices'][0]['message']['content']
+    except ServiceUnavailableError:
+        print("SUE")
+        return execute(system, user)
+    except APIError:
+        print("APIE")
+        return execute(system, user)
