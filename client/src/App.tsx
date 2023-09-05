@@ -33,7 +33,7 @@ import { SubheadingUploadedNavigator } from './components/SubheadingUploadedNavi
                     </div>)
                 }
                 {
-                    stage === stages.UPLOADED && (<div className='flex mt-4'>
+                    stage === stages.UPLOADED && (<div className='flex flex-col mt-4 md:flex-row'>
                         <SubheadingUploadedNavigator outline={outline} setShowSubheading={setShowSubheading} />
                         <SubheadingPreview content={outline.items[showSubheading.topic].subtopics[showSubheading.subtopic].text} />
                     </div>)

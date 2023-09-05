@@ -12,7 +12,7 @@ export const SubheadingUploadedNavigator: React.FC<SubheadingUploadedNavigatorPr
   }, [])
   
   return (
-    <div className="w-[30%] min-h-full max-h-[90vh] overflow-scroll px-8 py-4 border border-neutral-600 rounded-sm mr-3">
+    <div className="md:w-[30%] min-h-full max-h-[90vh] overflow-scroll md:px-8 px-4 py-4 border border-neutral-600 rounded-sm md:mr-3">
       <div className="mb-3 text-2xl font-bold text-neutral-600">Course Outline</div>
       {outline.items.map((item, itemIndex) => {
         return (
