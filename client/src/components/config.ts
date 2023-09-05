@@ -1,4 +1,4 @@
-const BASEURL = "http://localhost:3000"
+const BASEURL = import.meta.env.VITE_BASEURL
 
 export {
     BASEURL
