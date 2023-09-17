@@ -5,7 +5,7 @@ Output Guidelines:
 - The output needs to be structured properly like a textbook. A textbook which is known for being elaborate on its explainations.
 - The output needs to be long enough to be of a 60 minute lecture. atleast 5000 words.
 - The output must include code examples wherever relevant. 
-- The output must only be in markdown format.
+- The output must only be as markdown text. you will not wrap the markdown text in a markdown codeblock. just return the markdown text directly.
 - The output must not include any other prose other than whats asked for
 - The output must be as verbose as possible
 - The output must explain new technical jargon whenever they are first introduced formatted as a quoteblock

@@ -83,23 +83,32 @@ export const Inputs = ({ topic, setTopic, stage, setStage, setOutline, outline }
     }
 
     const handleGenerateSubheading = async () => {
-        setStage(stages.GENERATING_SECTIONS);
-        for (let itemIndex = 0; itemIndex < outline.items.length; itemIndex++) {
-            const item = outline.items[itemIndex];
-            for (let subtopicIndex = 0; subtopicIndex < item.subtopics.length; subtopicIndex++) {
-                const subtopic = item.subtopics[subtopicIndex];
-                const result = await fetchOneSubheading(itemIndex, subtopicIndex);
-                setOutline((prevOutline: Outline) => {
-                    if (!prevOutline) return null;
-    
-                    const newOutline = { ...prevOutline, items: [...prevOutline.items] };
-                    newOutline.items[itemIndex].subtopics[subtopicIndex].text = result.text;
-    
-                    return newOutline;
-                });
-            }
+        setStage(stages.GENERATING_SECTIONS)
+
+        const encodedOutline = btoa(JSON.stringify(outline))
+        const eventSource = new EventSource(`${BASEURL}/getcourse?outline=${encodedOutline}&topic=${topic}`)
+
+        eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data)
+            setOutline((prevOutline: Outline) => {
+                if (!prevOutline) return null
+
+                const newOutline = { ...prevOutline, items: [...prevOutline.items] }
+                newOutline.items[data.index].subtopics[data.subindex].text = data.result
+
+                return newOutline
+            })
         }
-        setStage(stages.DONE)
+
+        eventSource.onerror = (error) => {
+            console.error("EventSource failed:", error)
+            eventSource.close()
+        }
+
+        eventSource.onopen = () => {
+            setStage(stages.DONE)
+            console.log("EventSource opened")
+        }
     }
 
     const handleDownload = async () => {

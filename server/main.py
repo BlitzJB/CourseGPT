@@ -1,5 +1,4 @@
-from routes import app
-
+import uvicorn
 
 if __name__ == "__main__":
-    app.run(debug=True, port=3000)
+    uvicorn.run("api.main:app", host="0.0.0.0", port=8000, reload=True)

@@ -11,7 +11,7 @@ export const SubheadingStatus = ({ outline, setShowSubheading }: { outline: Outl
                         <div className='pl-4 '>
                             {
                                 item.subtopics.map((subtopic, subtopicIndex) => {
-                                    return <div className={`py-2 px-4 mb-2 rounded-md cursor-pointer ${subtopic.text === "Generating..." ? "bg-yellow-50" : "bg-green-50"}`} onClick={e => setShowSubheading({ topic: itemIndex, subtopic: subtopicIndex })}>{subtopic.name}</div>
+                                    return <div className={`py-2 px-4 mb-2 rounded-md cursor-pointer hover:bg-neutral-100 ${subtopic.text === "Generating..." ? "opacity-30 cursor-wait" : ""}`} onClick={e => setShowSubheading({ topic: itemIndex, subtopic: subtopicIndex })}>{subtopic.name}</div>
                                 })
                             }
                         </div>
