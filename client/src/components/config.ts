@@ -1,4 +1,4 @@
-const BASEURL = "https://coursegptbackend-v2-2.jb2k4.repl.co"
+const BASEURL = "https://coursegptbackend-v2.jb2k4.repl.co"
 
 export {
     BASEURL
